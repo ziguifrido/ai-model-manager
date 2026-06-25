@@ -26,7 +26,7 @@ $(cat SHA256SUMS 2>/dev/null || echo "SHA256SUMS available on release assets.")
 
 1. Download \`AIModelManager.zip\` from the release assets.
 2. Extract: \`unzip AIModelManager.zip\`
-3. Move to Applications: \`mv AIModelManager.app /Applications/\`
+3. Move to Applications: \`mv "AI Model Manager.app" /Applications/\`
 
 Or with Homebrew:
 

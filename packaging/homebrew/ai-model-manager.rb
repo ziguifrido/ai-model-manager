@@ -1,12 +1,12 @@
 cask "ai-model-manager" do
-  version "0.1.5"
+  version "0.1.6"
   sha256 "{{SHA256}}"
 
   url "https://github.com/ziguifrido/ai-model-manager/releases/download/v#{version}/AIModelManager.zip"
 
   name "AI Model Manager"
   desc "Discover and manage local AI models from Ollama, LM Studio, Hugging Face, MLX, and vLLM"
-  homepage "https://github.com/ziguifrido/my-ai-models"
+  homepage "https://github.com/ziguifrido/ai-model-manager"
 
   livecheck do
     url :url
@@ -15,7 +15,7 @@ cask "ai-model-manager" do
 
   depends_on macos: :sonoma
 
-  app "AIModelManager.app"
+  app "AI Model Manager.app"
 
   zap trash: [
     "~/Library/Application Support/AI Model Manager",
