@@ -1,11 +1,11 @@
 import Foundation
 
-public struct ScanSummary: Sendable {
+struct ScanSummary: Sendable {
     let models: [AIModel]
     let warnings: [String]
 }
 
-public actor ModelScannerService {
+actor ModelScannerService {
     private let scannerFactory: @Sendable (ScanConfiguration) -> [any ModelScanner]
     private let configurationStore: ConfigurationStore
     private let fileSystem: FileSystem
@@ -17,7 +17,7 @@ public actor ModelScannerService {
     }
 
     func scanAll() async -> ScanSummary {
-        let configuration = await configurationStore.load()
+        let configuration = configurationStore.config
         let scanners = scannerFactory(configuration)
         return await withTaskGroup(of: (models: [AIModel], warning: String?).self) { group in
             for scanner in scanners {

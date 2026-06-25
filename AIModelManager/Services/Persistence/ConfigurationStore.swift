@@ -1,21 +1,23 @@
 import Foundation
 
-public actor ConfigurationStore {
-    private let fileSystem: FileSystem
+@Observable
+final class ConfigurationStore {
+    private(set) var config = ScanConfiguration()
     private let url: URL
 
-    init(fileSystem: FileSystem = .default) {
-        self.fileSystem = fileSystem
+    init() {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first ?? URL(fileURLWithPath: NSHomeDirectory())
-        self.url = base.appendingPathComponent("My AI Models/scan-configuration.json")
+        self.url = base.appendingPathComponent("AI Model Manager/scan-configuration.json")
+        load()
     }
 
-    func load() -> ScanConfiguration {
-        guard let data = try? Data(contentsOf: url) else { return ScanConfiguration() }
-        return (try? JSONDecoder().decode(ScanConfiguration.self, from: data)) ?? ScanConfiguration()
+    func load() {
+        guard let data = try? Data(contentsOf: url) else { return }
+        config = (try? JSONDecoder().decode(ScanConfiguration.self, from: data)) ?? ScanConfiguration()
     }
 
     func save(_ configuration: ScanConfiguration) {
+        config = configuration
         do {
             try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
             let data = try JSONEncoder.pretty.encode(configuration)

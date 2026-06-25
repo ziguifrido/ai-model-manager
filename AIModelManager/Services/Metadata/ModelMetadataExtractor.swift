@@ -63,14 +63,14 @@ struct ModelMetadataExtractor {
         let standardized = url.standardizedFileURL
         let components = Array(standardized.pathComponents)
         if let hfCacheFolder = components.first(where: { $0.hasPrefix("models--") }) {
-            return humanizeRepositoryName(hfRepositoryName(from: hfCacheFolder))
+            return stripProvider(humanizeRepositoryName(hfRepositoryName(from: hfCacheFolder)))
         }
 
         if let snapshotIndex = components.firstIndex(where: { ["snapshots", "versions", "refs"].contains($0) }),
            snapshotIndex > 0 {
             let repoRoot = components[snapshotIndex - 1]
             if repoRoot.hasPrefix("models--") {
-                return humanizeRepositoryName(hfRepositoryName(from: repoRoot))
+                return stripProvider(humanizeRepositoryName(hfRepositoryName(from: repoRoot)))
             }
         }
 
@@ -104,6 +104,10 @@ struct ModelMetadataExtractor {
         result = result.replacingOccurrences(of: "_", with: " ")
         result = result.replacingOccurrences(of: "  ", with: " ")
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private static func stripProvider(_ name: String) -> String {
+        name.components(separatedBy: "/").last ?? name
     }
 
     static func size(at url: URL, fileSystem: FileSystem) -> Int64 {
