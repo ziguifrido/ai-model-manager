@@ -1,5 +1,9 @@
 import XCTest
+#if canImport(AIModelManager)
 @testable import AIModelManager
+#else
+@testable import AI_Model_Manager
+#endif
 
 final class AIModelManagerTests: XCTestCase {
     func testDeduplicationUsesStandardizedPath() {

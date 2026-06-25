@@ -44,7 +44,7 @@
 		B03506216E56A4587BCE2BDB /* ModelInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F80907916934B4FBFCC4A2; };
 		90C938D71EFABD11C952195D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D85474E17BE2DD19C554DCA; };
 		3C15365FBD0F8106E62A9482 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1F2981D6EF27DA7E4B45AC; };
-		ACBF00000000000000000000 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACRF00000000000000000000; };
+		EE783DB2A5E2D07F2783455E /* AIModelManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66758818ACF1E663463CE8B4; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,8 +86,9 @@
 		D8F80907916934B4FBFCC4A2 /* ModelInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIModelManager/Views/Inspector/ModelInspectorView.swift"; sourceTree = SOURCE_ROOT; };
 		9D85474E17BE2DD19C554DCA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIModelManager/Views/Settings/SettingsView.swift"; sourceTree = SOURCE_ROOT; };
 		2D1F2981D6EF27DA7E4B45AC /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIModelManager/Views/Sidebar/SidebarView.swift"; sourceTree = SOURCE_ROOT; };
+		66758818ACF1E663463CE8B4 /* AIModelManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIModelManager/Tests/AIModelManagerTests/AIModelManagerTests.swift"; sourceTree = SOURCE_ROOT; };
 		2544E5B1E7659A7BA6F06444 /* AI Model Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AI Model Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACRF00000000000000000000 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "AIModelManager/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		C6E00448A5E859F42479112D /* AIModelManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIModelManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -132,9 +133,9 @@
 				D8F80907916934B4FBFCC4A2 /* ModelInspectorView.swift */,
 				9D85474E17BE2DD19C554DCA /* SettingsView.swift */,
 				2D1F2981D6EF27DA7E4B45AC /* SidebarView.swift */,
+				66758818ACF1E663463CE8B4 /* AIModelManagerTests.swift */,
 				8C022948E07887E31192ABBE /* Products */,
-			
-				ACRF00000000000000000000 /* Assets.xcassets */,);
+			);
 			path = "";
 			sourceTree = SOURCE_ROOT;
 		};
@@ -142,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				2544E5B1E7659A7BA6F06444 /* AI Model Manager.app */,
+				C6E00448A5E859F42479112D /* AIModelManagerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -164,6 +166,20 @@
 			productReference = 2544E5B1E7659A7BA6F06444;
 			productType = "com.apple.product-type.application";
 		};
+		208C54D1C19CFF7994A925A1 /* AIModelManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85002E79B145767BE805B85F;
+			buildPhases = (
+				1063F6DBE95CE9A1601B3915,
+				0D94EBA4EB12BD3B840A16F7,
+			);
+			buildRules = ();
+			dependencies = (948D90978E3E9713CED5C5B0);
+			name = "AIModelManagerTests";
+			productName = "AIModelManagerTests";
+			productReference = C6E00448A5E859F42479112D;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -180,6 +196,7 @@
 			projectRoot = "";
 			targets = (
 				730950AD798A77AD508AA9E2,
+				208C54D1C19CFF7994A925A1,
 			);
 		};
 /* End PBXProject section */
@@ -230,7 +247,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXSourcesBuildPhase section */
 		20307C7862C63A53C3D9C2BF = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -240,10 +256,31 @@
 		02836E84A2C70712BB9AC6BA = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
-				ACBF00000000000000000000 /* Assets.xcassets in Resources */,);
+			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1063F6DBE95CE9A1601B3915 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE783DB2A5E2D07F2783455E /* AIModelManagerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0D94EBA4EB12BD3B840A16F7 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+
+/* Begin PBXTargetDependency section */
+		948D90978E3E9713CED5C5B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 730950AD798A77AD508AA9E2;
+		};
+/* End PBXTargetDependency section */
+/* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
 		6ED5143055921B79590492BA = {
@@ -262,14 +299,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1", "$(inherited)");
 				INFOPLIST_FILE = "AIModelManager/Resources/Info.plist";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.marcos.my-ai-models";
 				PRODUCT_NAME = "AI Model Manager";
-				MARKETING_VERSION = 0.1.0;
-				CURRENT_PROJECT_VERSION = 1;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -293,21 +327,48 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = "AIModelManager/Resources/Info.plist";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.marcos.my-ai-models";
 				PRODUCT_NAME = "AI Model Manager";
-				MARKETING_VERSION = 0.1.0;
-				CURRENT_PROJECT_VERSION = 1;
-				// CODE_SIGN_IDENTITY = "Developer ID Application"; // Uncomment for distribution
-				// CODE_SIGN_STYLE = Manual;                       // Uncomment for distribution
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "3";
+			};
+			name = Release;
+		};
+		C9CE2D62F6E3692F465E77ED = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.marcos.my-ai-models.tests";
+				PRODUCT_NAME = "AIModelManagerTests";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "3";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AI Model Manager.app/Contents/MacOS/AI Model Manager";
+			};
+			name = Debug;
+		};
+		846946D2E78637AAA0DB9CBE = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.marcos.my-ai-models.tests";
+				PRODUCT_NAME = "AIModelManagerTests";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "3";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AI Model Manager.app/Contents/MacOS/AI Model Manager";
 			};
 			name = Release;
 		};
@@ -328,6 +389,15 @@
 			buildConfigurations = (
 				6ED5143055921B79590492BA,
 				EA4ECDA4CD3842178C65D17D,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85002E79B145767BE805B85F = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9CE2D62F6E3692F465E77ED,
+				846946D2E78637AAA0DB9CBE,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
