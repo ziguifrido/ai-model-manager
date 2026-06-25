@@ -1,5 +1,5 @@
 cask "ai-model-manager" do
-  version "0.1.2"
+  version "0.1.3"
   sha256 "{{SHA256}}"
 
   url "https://github.com/ziguifrido/my-ai-models/releases/download/v#{version}/AIModelManager.zip"
