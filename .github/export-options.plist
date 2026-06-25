@@ -3,17 +3,16 @@
 <plist version="1.0">
 <dict>
     <key>method</key>
-    <string>developer-id</string>
-    <key>teamID</key>
-    <string>YOUR_TEAM_ID_HERE</string>
+    <string>development</string>
     <!--
-    For notarization, configure:
-    - signingStyle: "manual"
-    - teamID: Your Apple Team ID
-    - signingCertificate: "Developer ID Application"
+    For distribution with notarization, change method to "developer-id" and:
+    - Set teamID below to your Apple Team ID
+    - Configure signingStyle: "manual"
+    - Set signingCertificate: "Developer ID Application"
+    - Pass APPLE_TEAM_ID secret in the workflow (already wired up)
 
-    Leave teamID as YOUR_TEAM_ID_HERE for local builds.
-    Local development builds work without code signing.
+    The "development" method uses ad-hoc signing and works on CI runners
+    without a Developer ID certificate. It is sufficient for testing.
     -->
 </dict>
 </plist>

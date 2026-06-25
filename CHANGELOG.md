@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-06-25
+
+### Fixed
+
+- Release export now uses `development` signing method (ad-hoc) instead of `developer-id`, which required a Developer ID certificate not available on CI runners.
+
 ## [0.1.0] - 2026-06-25
 
 ### Added
@@ -33,4 +39,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `format` and `modifiedAt`/`createdAt`/`lastAccess` fields from `AIModel`.
 - LM Studio deletion strategy now uses bidirectional hub name matching.
 
+[0.1.1]: https://github.com/ziguifrido/ai-model-manager/releases/tag/v0.1.1
 [0.1.0]: https://github.com/ziguifrido/ai-model-manager/releases/tag/v0.1.0
