@@ -16,8 +16,8 @@ set -euo pipefail
 #   ./scripts/setup_homebrew_tap.sh [version] [sha256]
 #
 # Examples:
-#   ./scripts/setup_homebrew_tap.sh 0.1.1 abc123...
-#   ./scripts/setup_homebrew_tap.sh 0.1.1 "$(shasum -a 256 /tmp/AIModelManager.zip | awk '{print $1}')"
+#   ./scripts/setup_homebrew_tap.sh 0.1.2 abc123...
+#   ./scripts/setup_homebrew_tap.sh 0.1.2 "$(shasum -a 256 /tmp/AIModelManager.zip | awk \'{print $1}\')"
 # ------------------------------------------------------------------
 
 VERSION="${1:-}"
@@ -26,7 +26,7 @@ SHA256="${2:-}"
 if [ -z "$VERSION" ] || [ -z "$SHA256" ]; then
     echo "Usage: $0 <version> <sha256>"
     echo ""
-    echo "  version — Semantic version (e.g. 0.1.1)"
+    echo "  version — Semantic version (e.g. 0.1.2)"
     echo "  sha256  — SHA256 checksum of the release ZIP"
     exit 1
 fi

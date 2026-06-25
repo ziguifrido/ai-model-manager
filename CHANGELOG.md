@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-06-25
+
+### Fixed
+
+- Release workflow: skip `xcodebuild -exportArchive` entirely (method deprecated in Xcode 16.4, requires team ID). Package `.app` directly from the archive's `Products/Applications/` directory.
+
 ## [0.1.1] - 2026-06-25
 
 ### Fixed
@@ -39,5 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `format` and `modifiedAt`/`createdAt`/`lastAccess` fields from `AIModel`.
 - LM Studio deletion strategy now uses bidirectional hub name matching.
 
+[0.1.2]: https://github.com/ziguifrido/ai-model-manager/releases/tag/v0.1.2
 [0.1.1]: https://github.com/ziguifrido/ai-model-manager/releases/tag/v0.1.1
 [0.1.0]: https://github.com/ziguifrido/ai-model-manager/releases/tag/v0.1.0

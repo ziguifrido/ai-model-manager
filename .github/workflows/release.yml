@@ -24,28 +24,17 @@ jobs:
             -configuration Release \
             -archivePath /tmp/AIModelManager.xcarchive
 
-      # ---- Export ----
-      # For local development builds (unsigned). To enable notarization:
-      # 1. Uncomment codesign settings in .github/export-options.plist
-      # 2. Configure the notarization step below
-      # 3. Set secrets: APPLE_ID, APPLE_TEAM_ID, APPLE_APP_PASSWORD, APPLE_NOTARY_KEY
-      - name: Export .app
-        env:
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          if [ -n "$APPLE_TEAM_ID" ]; then
-            sed -i '' "s/YOUR_TEAM_ID_HERE/$APPLE_TEAM_ID/" .github/export-options.plist
-          fi
-          xcodebuild -exportArchive \
-            -archivePath /tmp/AIModelManager.xcarchive \
-            -exportPath /tmp/AIModelManager \
-            -exportOptionsPlist .github/export-options.plist
-
       # ---- Package ----
+      # Package the .app directly from the archive.
+      # For notarized releases, replace this with:
+      #   1. xcodebuild -exportArchive (with developer-id signing)
+      #   2. xcrun notarytool submit
+      #   3. xcrun stapler staple
       - name: Create ZIP
         run: |
-          cd /tmp/AIModelManager
-          ditto -c -k --sequesterRsrc --keepParent AIModelManager.app /tmp/AIModelManager.zip
+          ditto -c -k --sequesterRsrc --keepParent \
+            "/tmp/AIModelManager.xcarchive/Products/Applications/AI Model Manager.app" \
+            /tmp/AIModelManager.zip
 
       - name: Generate Checksums
         run: |
