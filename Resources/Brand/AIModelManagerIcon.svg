@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1024"
+     height="1024"
+     viewBox="0 0 1024 1024">
+
+  <defs>
+
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2248"/>
+      <stop offset="100%" stop-color="#08142E"/>
+    </linearGradient>
+
+    <linearGradient id="folder" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5EA9FF"/>
+      <stop offset="100%" stop-color="#2356C6"/>
+    </linearGradient>
+
+    <linearGradient id="tab" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#74C5FF"/>
+      <stop offset="100%" stop-color="#4A82FF"/>
+    </linearGradient>
+
+    <linearGradient id="card1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EEF4FF"/>
+      <stop offset="100%" stop-color="#D8E5FF"/>
+    </linearGradient>
+
+    <linearGradient id="card2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D6D4FF"/>
+      <stop offset="100%" stop-color="#A7B5FF"/>
+    </linearGradient>
+
+    <linearGradient id="badge" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E5ECF7"/>
+    </linearGradient>
+
+    <linearGradient id="cube" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#37D7FF"/>
+      <stop offset="100%" stop-color="#2254FF"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0"
+                    dy="14"
+                    stdDeviation="18"
+                    flood-color="#000000"
+                    flood-opacity="0.22"/>
+    </filter>
+
+  </defs>
+
+  <!-- Background -->
+
+  <rect
+      x="40"
+      y="40"
+      width="944"
+      height="944"
+      rx="180"
+      fill="url(#bg)"/>
+
+  <!-- Folder -->
+
+  <g filter="url(#shadow)">
+
+    <!-- Folder tab -->
+
+    <path
+      d="
+      M250 290
+      h210
+      c40 0 60 22 74 42
+      h200
+      c38 0 60 22 60 60
+      v40
+      H230
+      v-82
+      c0-36 20-60 52-60
+      z"
+      fill="url(#tab)"/>
+
+    <!-- Cards -->
+
+    <rect
+      x="340"
+      y="320"
+      width="360"
+      height="310"
+      rx="28"
+      fill="url(#card2)"/>
+
+    <rect
+      x="320"
+      y="350"
+      width="390"
+      height="310"
+      rx="28"
+      fill="#C7D8FF"/>
+
+    <rect
+      x="300"
+      y="382"
+      width="420"
+      height="310"
+      rx="28"
+      fill="url(#card1)"/>
+
+    <!-- Folder body -->
+
+    <path
+      d="
+      M220 420
+      h584
+      c28 0 52 24 52 52
+      v270
+      c0 32-24 56-52 56
+      H220
+      c-28 0-52-24-52-56
+      V472
+      c0-28 24-52 52-52
+      z"
+      fill="url(#folder)"/>
+
+  </g>
+
+  <!-- AI Badge -->
+
+  <g filter="url(#shadow)">
+
+    <path
+      d="
+      M512 438
+      L620 500
+      L620 624
+      L512 686
+      L404 624
+      L404 500
+      Z"
+      fill="url(#badge)"/>
+
+    <!-- Connections -->
+
+    <g stroke="#2954C9"
+       stroke-width="9"
+       fill="none"
+       stroke-linecap="round">
+
+      <line x1="512" y1="562" x2="512" y2="500"/>
+      <line x1="512" y1="562" x2="460" y2="532"/>
+      <line x1="512" y1="562" x2="564" y2="532"/>
+      <line x1="512" y1="562" x2="460" y2="592"/>
+      <line x1="512" y1="562" x2="564" y2="592"/>
+      <line x1="512" y1="562" x2="512" y2="626"/>
+
+    </g>
+
+    <!-- Nodes -->
+
+    <g fill="#4A6BFF">
+
+      <circle cx="512" cy="500" r="13"/>
+      <circle cx="460" cy="532" r="13"/>
+      <circle cx="564" cy="532" r="13"/>
+      <circle cx="460" cy="592" r="13"/>
+      <circle cx="564" cy="592" r="13"/>
+      <circle cx="512" cy="626" r="13"/>
+
+    </g>
+
+    <!-- Center cube -->
+
+    <g>
+
+      <polygon
+        points="512,530 548,550 512,570 476,550"
+        fill="#2DB9FF"/>
+
+      <polygon
+        points="476,550 512,570 512,612 476,592"
+        fill="#2793F5"/>
+
+      <polygon
+        points="548,550 512,570 512,612 548,592"
+        fill="#2456E8"/>
+
+    </g>
+
+  </g>
+
+</svg>

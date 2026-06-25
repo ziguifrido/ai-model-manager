@@ -2,32 +2,46 @@
 
 ## Project Notes
 
-- App name: `My AI Models`
+- App name: `AI Model Manager`
 - Platform: macOS 14+
-- Stack: Swift 6, SwiftUI, MVVM
+- Stack: Swift 6, SwiftUI, MVVM, SwiftData
+- Build: Xcode project (`.xcodeproj`) or SwiftPM
+- Distribution: Homebrew Cask
 
 ## Project Structure
 
-```
-Sources/
-  AIModelManager/
-    Models/           — AIModel struct, EngineKind, ModelSortOption, ScanConfiguration
-    Views/            — ContentView, ModelTableView, ModelDetailView, SettingsView
-    ViewModels/       — LibraryViewModel, SettingsViewModel
-    Services/
-      Scanner/        — DirectoryModelScanner, ModelScannerService
-      Engines/        — One scanner per engine (Ollama, LM Studio, HF, MLX, vLLM)
-                      — Deletion strategies (LMStudioDeletionStrategy)
-                      — EnginePaths (default scan roots per engine)
-      Metadata/       — ModelMetadataExtractor (display name, grouping, size)
-      Configuration/  — ConfigurationStore (persistent scan config)
-      Filesystem/     — FileSystem (thin wrapper over FileManager)
-    Persistence/      — ModelInventoryStore (in-memory model list)
-    Utilities/        — Formatting (byte count formatter)
-    Support/          — AppContainer (DI assembly)
-  AIModelManagerApp/  — @main entry point
-Tests/
-  AIModelManagerTests/
+```text
+AIModelManager/         — Main source root (library + app)
+  App/                  — @main entry point, @Observable DI container, commands
+  Engines/
+    Ollama/             — OllamaModelScanner, removeOrphanBlobs()
+    LMStudio/           — LMStudioModelScanner, LMStudioDeletionStrategy
+    HuggingFace/        — HuggingFaceModelScanner
+    MLX/                — MLXModelScanner
+    VLLM/               — VLLMModelScanner
+    EnginePaths.swift   — Default scan roots per engine
+    ModelScanner.swift  — Protocol
+  Models/               — AIModel, EngineKind, ScanConfiguration, AppPreferencesModel
+  Services/
+    Scanner/            — DirectoryModelScanner, ModelScannerService, FileWatcherService
+    Deletion/           — ModelDeletionStrategy protocol + LMStudio impl
+    Metadata/           — ModelMetadataExtractor (display name, grouping, deletion location)
+    Persistence/        — ConfigurationStore (@Observable, JSON-backed), ModelInventoryStore, PreferencesStore (SwiftData actor)
+    Filesystem/         — FileSystem (thin wrapper over FileManager)
+  Statistics/           — ModelStatistics, UsageStats
+  Utilities/            — Formatting (byte count formatter), Version
+  ViewModels/           — LibraryViewModel, SettingsViewModel (@Observable)
+  Views/
+    ContentView         — NavigationSplitView (sidebar → browser → inspector)
+    Sidebar/            — SidebarView (engine filter list)
+    Browser/            — ModelBrowserView (Table + searchable)
+    Inspector/          — ModelInspectorView (detail form)
+    Settings/           — SettingsView (per-engine custom paths)
+    Components/         — DeletionPreviewView (confirmation sheet)
+  Resources/            — Info.plist
+  Assets.xcassets/      — App icon assets
+  Tests/                — AIModelManagerTests (via SwiftPM `swift test`)
+AIModelManager.xcodeproj/ — Xcode project (generated, 38 Swift source files)
 ```
 
 ## Scanner Behavior
@@ -42,12 +56,20 @@ Tests/
 
 When deleting an LM Studio model, the strategy walks up the path looking for a sibling `hub/models/` directory. The hub dir name match is bidirectional: the model name may be either a substring of the hub dir name (e.g. flat HF-style `models--publisher--model-name`) or the hub dir name may be a substring of the model name (e.g. base `gemma-3-4b` vs quantized `gemma-3-4b-it-qat-4bit`).
 
-## Removed Fields
+## Commits
 
-- `format` (ModelFormat) — removed from AIModel, along with ModelFormat.swift, ModelFormatDetector.swift, ModelFilter.swift (unused).
-- `modifiedAt`, `createdAt`, `lastAccess` — removed from AIModel, along with Formatting.date formatter and FileSystem.resourceValues().
+Only commit when explicitly requested by the user. Never commit without authorization.
+
+When asked to commit, prefer small, logical commits:
+1. Business logic changes (Models, Engines, Services)
+2. SwiftUI layer (App, Views, ViewModels)
+3. Xcode project
+4. Resources and assets (icons, Info.plist)
+5. CI/CD, scripts, packaging
+6. Documentation (CHANGELOG, README, AGENTS)
 
 ## Working Rule
 
 - Keep changes minimal and root-cause focused.
 - Prefer native macOS APIs and shared helpers already in the codebase.
+- Use `.xcodeproj` for IDE development; `swift test` for CLI testing.
