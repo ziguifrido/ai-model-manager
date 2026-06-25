@@ -61,6 +61,11 @@ fi
 
 cd "$TAP_DIR"
 
+# Configure remote to use GH_TOKEN for auth
+if [ -n "${GH_TOKEN:-}" ]; then
+    git remote set-url origin "https://${GH_TOKEN}@github.com/ziguifrido/homebrew-ai-model-manager.git"
+fi
+
 # Ensure Casks directory exists
 mkdir -p Casks
 
