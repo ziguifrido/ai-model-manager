@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  release:
+    name: Build, Archive and Publish
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      # ---- Build ----
+      - name: Archive
+        run: |
+          xcodebuild archive \
+            -project AIModelManager.xcodeproj \
+            -scheme AIModelManagerApp \
+            -configuration Release \
+            -archivePath /tmp/AIModelManager.xcarchive
+
+      # ---- Export ----
+      # For local development builds (unsigned). To enable notarization:
+      # 1. Uncomment codesign settings in .github/export-options.plist
+      # 2. Configure the notarization step below
+      # 3. Set secrets: APPLE_ID, APPLE_TEAM_ID, APPLE_APP_PASSWORD, APPLE_NOTARY_KEY
+      - name: Export .app
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath /tmp/AIModelManager.xcarchive \
+            -exportPath /tmp/AIModelManager \
+            -exportOptionsPlist .github/export-options.plist
+
+      # ---- Package ----
+      - name: Create ZIP
+        run: |
+          cd /tmp/AIModelManager
+          ditto -c -k --sequesterRsrc --keepParent AIModelManager.app /tmp/AIModelManager.zip
+
+      - name: Generate Checksums
+        run: |
+          shasum -a 256 /tmp/AIModelManager.zip > /tmp/SHA256SUMS
+          shasum -a 256 /tmp/AIModelManager.zip > /tmp/SHA256SUMS.txt
+          cp /tmp/AIModelManager.zip /tmp/SHA256SUMS /tmp/SHA256SUMS.txt "${{ github.workspace }}"/
+
+      - name: Generate Release Notes
+        run: |
+          scripts/create_release_notes.sh "${{ github.ref_name }}" /tmp/release_notes.md
+          cp /tmp/release_notes.md "${{ github.workspace }}"/
+
+      # ---- Notarization (optional - uncomment when signing is configured) ----
+      # - name: Notarize
+      #   run: |
+      #     xcrun notarytool submit /tmp/AIModelManager.zip \
+      #       --apple-id "${{ secrets.APPLE_ID }}" \
+      #       --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+      #       --password "${{ secrets.APPLE_APP_PASSWORD }}" \
+      #       --wait
+
+      # - name: Staple
+      #   run: |
+      #     xcrun stapler staple /tmp/AIModelManager/AIModelManager.app
+      #     ditto -c -k --sequesterRsrc --keepParent /tmp/AIModelManager/AIModelManager.app /tmp/AIModelManager_notarized.zip
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: /tmp/release_notes.md
+          files: |
+            AIModelManager.zip
+            SHA256SUMS
+            SHA256SUMS.txt
+
+      # ---- Homebrew Tap ----
+      # Prerequisite: set TAP_GITHUB_TOKEN secret to a PAT with repo scope
+      # for the target tap repository (ziguifrido/homebrew-ai-model-manager).
+      - name: Update Homebrew Tap
+        if: ${{ secrets.TAP_GITHUB_TOKEN != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/setup_homebrew_tap.sh
+          SHA=$(shasum -a 256 /tmp/AIModelManager.zip | awk '{print $1}')
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"  # strip leading v
+          scripts/setup_homebrew_tap.sh "$VERSION" "$SHA"
+        shell: bash
