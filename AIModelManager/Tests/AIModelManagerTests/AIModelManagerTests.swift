@@ -20,7 +20,7 @@ final class AIModelManagerTests: XCTestCase {
         let path = URL(fileURLWithPath: "/Users/me/.cache/huggingface/hub/models--meta-llama--Llama-3.2-3B-Instruct/snapshots/abc123/model.safetensors")
         XCTAssertEqual(
             ModelMetadataExtractor.displayName(for: path),
-            "meta-llama/Llama-3.2-3B-Instruct"
+            "Llama-3.2-3B-Instruct"
         )
     }
 
@@ -28,7 +28,7 @@ final class AIModelManagerTests: XCTestCase {
         let path = URL(fileURLWithPath: "/Users/me/.cache/vllm/models--Qwen--Qwen2.5-7B-Instruct/snapshots/abc123/model.safetensors")
         XCTAssertEqual(
             ModelMetadataExtractor.displayName(for: path),
-            "Qwen/Qwen2.5-7B-Instruct"
+            "Qwen2.5-7B-Instruct"
         )
     }
 
