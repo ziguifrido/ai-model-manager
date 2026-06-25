@@ -1,8 +1,8 @@
 cask "ai-model-manager" do
-  version "0.1.3"
+  version "0.1.4"
   sha256 "{{SHA256}}"
 
-  url "https://github.com/ziguifrido/my-ai-models/releases/download/v#{version}/AIModelManager.zip"
+  url "https://github.com/ziguifrido/ai-model-manager/releases/download/v#{version}/AIModelManager.zip"
 
   name "AI Model Manager"
   desc "Discover and manage local AI models from Ollama, LM Studio, Hugging Face, MLX, and vLLM"
@@ -13,7 +13,7 @@ cask "ai-model-manager" do
     strategy :github_latest
   end
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "AIModelManager.app"
 
