@@ -3,25 +3,27 @@ import SwiftData
 
 @ModelActor
 actor PreferencesStore {
-    func loadConfiguration() -> ScanConfiguration {
+    func loadConfiguration() throws -> ScanConfiguration {
         let descriptor = FetchDescriptor<AppPreferencesModel>(
             predicate: #Predicate { $0.id == "main" }
         )
-        guard let model = try? modelContext.fetch(descriptor).first else {
+        let results = try modelContext.fetch(descriptor)
+        guard let model = results.first else {
             return ScanConfiguration()
         }
         return model.decoded ?? ScanConfiguration()
     }
 
-    func saveConfiguration(_ config: ScanConfiguration) {
+    func saveConfiguration(_ config: ScanConfiguration) throws {
         let descriptor = FetchDescriptor<AppPreferencesModel>(
             predicate: #Predicate { $0.id == "main" }
         )
-        if let existing = try? modelContext.fetch(descriptor).first {
+        let results = try modelContext.fetch(descriptor)
+        if let existing = results.first {
             existing.data = AppPreferencesModel.encode(config)
         } else {
             modelContext.insert(AppPreferencesModel(data: AppPreferencesModel.encode(config)))
         }
-        try? modelContext.save()
+        try modelContext.save()
     }
 }

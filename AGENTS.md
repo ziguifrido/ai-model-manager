@@ -10,7 +10,7 @@
 
 ## Project Structure
 
-```
+```text
 AIModelManager/         — Main source root (library + app)
   App/                  — @main entry point, @Observable DI container, commands
   Engines/

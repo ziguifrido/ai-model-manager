@@ -29,6 +29,7 @@ struct ModelBrowserView: View {
                         Label("Show in Finder", systemImage: "folder")
                     }
                     Button(role: .destructive) {
+                        viewModel.selectedModelIDs = selection
                         Task { await viewModel.prepareDeletion() }
                     } label: {
                         Label("Delete", systemImage: "trash")

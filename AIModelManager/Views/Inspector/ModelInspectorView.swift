@@ -12,7 +12,7 @@ struct ModelInspectorView: View {
             LabeledContent("Path", value: model.location.path)
             LabeledContent("Size", value: Formatting.byteCount(model.size))
             LabeledContent("Files", value: "\(model.fileCount)")
-            if let ext = model.primaryExtension {
+            if let ext = model.primaryExtension, !ext.isEmpty {
                 LabeledContent("Extension", value: ext)
             }
         }

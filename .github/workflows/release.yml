@@ -30,7 +30,12 @@ jobs:
       # 2. Configure the notarization step below
       # 3. Set secrets: APPLE_ID, APPLE_TEAM_ID, APPLE_APP_PASSWORD, APPLE_NOTARY_KEY
       - name: Export .app
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
+          if [ -n "$APPLE_TEAM_ID" ]; then
+            sed -i '' "s/YOUR_TEAM_ID_HERE/$APPLE_TEAM_ID/" .github/export-options.plist
+          fi
           xcodebuild -exportArchive \
             -archivePath /tmp/AIModelManager.xcarchive \
             -exportPath /tmp/AIModelManager \
@@ -49,8 +54,10 @@ jobs:
           cp /tmp/AIModelManager.zip /tmp/SHA256SUMS /tmp/SHA256SUMS.txt "${{ github.workspace }}"/
 
       - name: Generate Release Notes
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          scripts/create_release_notes.sh "${{ github.ref_name }}" /tmp/release_notes.md
+          scripts/create_release_notes.sh "$REF_NAME" /tmp/release_notes.md
           cp /tmp/release_notes.md "${{ github.workspace }}"/
 
       # ---- Notarization (optional - uncomment when signing is configured) ----
@@ -68,7 +75,7 @@ jobs:
       #     ditto -c -k --sequesterRsrc --keepParent /tmp/AIModelManager/AIModelManager.app /tmp/AIModelManager_notarized.zip
 
       - name: Publish Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           body_path: /tmp/release_notes.md
           files: |
@@ -80,13 +87,13 @@ jobs:
       # Prerequisite: set TAP_GITHUB_TOKEN secret to a PAT with repo scope
       # for the target tap repository (ziguifrido/homebrew-ai-model-manager).
       - name: Update Homebrew Tap
-        if: ${{ secrets.TAP_GITHUB_TOKEN != '' }}
+        if: env.GH_TOKEN != ''
         env:
           GH_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
           chmod +x scripts/setup_homebrew_tap.sh
           SHA=$(shasum -a 256 /tmp/AIModelManager.zip | awk '{print $1}')
-          VERSION="${{ github.ref_name }}"
-          VERSION="${VERSION#v}"  # strip leading v
+          VERSION="${REF_NAME#v}"
           scripts/setup_homebrew_tap.sh "$VERSION" "$SHA"
         shell: bash

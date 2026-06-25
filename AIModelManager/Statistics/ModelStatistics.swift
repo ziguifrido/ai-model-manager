@@ -17,7 +17,7 @@ struct ModelStatistics {
             engineCounts[m.engine] = (curr.0 + 1, curr.1 + m.size)
         }
         byEngine = engineCounts.map { ($0.key, $0.value.0, $0.value.1) }
-            .sorted { $0.1 > $1.1 }
+            .sorted { $0.2 > $1.2 }
 
         largestModel = models.max(by: { $0.size < $1.size })
         smallestModel = models.filter { $0.size > 0 }.min(by: { $0.size < $1.size })

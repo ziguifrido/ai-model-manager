@@ -14,7 +14,7 @@ cat > "$OUTPUT" << EOF
 
 ### Changes
 
-$(git log --oneline "$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD" 2>/dev/null || echo "- Initial release.")
+$(git log --oneline "$(git describe --tags --abbrev=0 HEAD~ 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD" 2>/dev/null || echo "- Initial release.")
 
 ### Checksums
 

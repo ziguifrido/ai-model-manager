@@ -11,6 +11,7 @@ if [ ! -d "$APP_PATH" ]; then
 fi
 
 echo "==> Packaging $APP_PATH into $OUTPUT_DIR/$ZIP_NAME..."
+mkdir -p "$OUTPUT_DIR"
 cd "$(dirname "$APP_PATH")"
 ditto -c -k --sequesterRsrc --keepParent "$(basename "$APP_PATH")" "$OUTPUT_DIR/$ZIP_NAME"
 

@@ -20,7 +20,7 @@ guard let svgData = FileManager.default.contents(atPath: svgPath),
 
 let sizes = [16, 32, 64, 128, 256, 512, 1024]
 for size in sizes {
-    let rep = NSBitmapImageRep(
+    guard let rep = NSBitmapImageRep(
         bitmapDataPlanes: nil,
         pixelsWide: size,
         pixelsHigh: size,
@@ -31,15 +31,25 @@ for size in sizes {
         colorSpaceName: .deviceRGB,
         bytesPerRow: 0,
         bitsPerPixel: 32
-    )!
+    ) else {
+        print("ERROR: could not create bitmap rep for \(size)×\(size)")
+        exit(1)
+    }
     rep.size = NSSize(width: size, height: size)
 
     NSGraphicsContext.saveGraphicsState()
-    NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: rep)
+    guard let ctx = NSGraphicsContext(bitmapImageRep: rep) else {
+        print("ERROR: could not create graphics context for \(size)×\(size)")
+        exit(1)
+    }
+    NSGraphicsContext.current = ctx
     img.draw(in: NSRect(x: 0, y: 0, width: size, height: size))
     NSGraphicsContext.restoreGraphicsState()
 
-    let pngData = rep.representation(using: .png, properties: [:])!
+    guard let pngData = rep.representation(using: .png, properties: [:]) else {
+        print("ERROR: could not encode PNG for \(size)×\(size)")
+        exit(1)
+    }
     let out = "\(outputDir)/icon_\(size).png"
     try pngData.write(to: URL(fileURLWithPath: out))
     print("Generated \(size)×\(size)")

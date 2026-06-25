@@ -24,13 +24,13 @@ struct DeletionPreviewView: View {
                 }
             }
 
-            Text("Total space reclaimed: \(Formatting.byteCount(viewModel.selectedModelsSize))")
+            Text("Total space reclaimed: \(Formatting.byteCount(dirs.reduce(0) { $0 + ModelMetadataExtractor.directorySize(at: $1, fileSystem: FileSystem.default) }))")
                 .font(.subheadline)
 
             HStack {
                 Button("Cancel", role: .cancel) { viewModel.cancelDeletion() }
                 Button("Delete \(viewModel.selectedModelIDs.count) model(s)", role: .destructive) {
-                    viewModel.executeDeletion()
+                    Task { await viewModel.executeDeletion() }
                 }
                 .keyboardShortcut(.defaultAction)
             }

@@ -64,15 +64,10 @@ Located in `Resources/Brand/`:
 To regenerate all icon sizes:
 
 ```bash
-# Generate 1024×1024 master
 swift Resources/Brand/AIModelManagerIcon.swift
-
-# Resize for all required macOS sizes
-ICONSET="AIModelManager/Assets.xcassets/AppIcon.appiconset"
-for size in 16 32 64 128 256 512 1024; do
-  sips -z $size $size /tmp/icon_1024.png --out "$ICONSET/icon_${size}.png"
-done
 ```
+
+The script renders the SVG via NSImage and writes all sizes directly to `AIModelManager/Assets.xcassets/AppIcon.appiconset/icon_*.png`, as well as a 1024×1024 master to `Resources/Brand/AIModelManagerIcon.png`.
 
 ---
 

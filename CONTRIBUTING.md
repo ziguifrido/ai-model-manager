@@ -40,4 +40,4 @@ swift test
 
 ## Releasing
 
-See [RELEASES.md](RELEASES.md) for the release process.
+Releases are automated via GitHub Actions. Push a `v*` tag to trigger the [release workflow](.github/workflows/release.yml). See the [README](README.md#releases) for details.

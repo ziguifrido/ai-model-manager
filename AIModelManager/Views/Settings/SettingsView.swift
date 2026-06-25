@@ -15,9 +15,6 @@ struct SettingsView: View {
                     .font(.headline)
                 Spacer(minLength: 16)
                 HStack(spacing: 8) {
-                    Button { pickFolder() } label: {
-                        Label("Add Folder", systemImage: "folder.badge.plus")
-                    }
                     Button { dismiss() } label: {
                         Image(systemName: "xmark")
                     }

@@ -92,7 +92,7 @@ swift test
 
 ### Scanner Architecture
 
-```
+```text
 ModelScanner (protocol)
 ├── OllamaModelScanner
 ├── LMStudioModelScanner
@@ -105,7 +105,7 @@ Each scanner conforms to `ModelScanner` and returns `[AIModel]`. Scanners are co
 
 ### Deletion Strategy
 
-```
+```text
 ModelDeletionStrategy (protocol)
 └── LMStudioDeletionStrategy
 ```
@@ -139,7 +139,7 @@ Deletion strategies compute the set of directories to remove. The LM Studio stra
 
 ## Project Structure
 
-```
+```text
 .
 ├── AIModelManager/              # Source root (library + app)
 │   ├── App/                     # @main entry point, DI container, commands

@@ -46,6 +46,7 @@ final class LibraryViewModel {
     }
 
     func scanNow() {
+        guard !isScanning else { return }
         isScanning = true
         Task {
             let summary = await scannerService.scanAll()
@@ -71,7 +72,7 @@ final class LibraryViewModel {
         showDeletionPreview = true
     }
 
-    func executeDeletion() {
+    func executeDeletion() async {
         let modelsToDelete = selectedModels
         let idsToDelete = Set(modelsToDelete.map(\.id))
         let dirs = pendingDeletionDirectories

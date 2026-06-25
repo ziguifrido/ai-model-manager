@@ -13,16 +13,19 @@ final class ConfigurationStore {
 
     func load() {
         guard let data = try? Data(contentsOf: url) else { return }
-        config = (try? JSONDecoder().decode(ScanConfiguration.self, from: data)) ?? ScanConfiguration()
+        guard let decoded = try? JSONDecoder().decode(ScanConfiguration.self, from: data) else { return }
+        config = decoded
     }
 
     func save(_ configuration: ScanConfiguration) {
-        config = configuration
         do {
             try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
             let data = try JSONEncoder.pretty.encode(configuration)
             try data.write(to: url, options: .atomic)
-        } catch { }
+            config = configuration
+        } catch {
+            print("ConfigurationStore save failed: \(error)")
+        }
     }
 }
 

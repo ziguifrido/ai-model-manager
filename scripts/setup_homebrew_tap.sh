@@ -31,6 +31,9 @@ if [ -z "$VERSION" ] || [ -z "$SHA256" ]; then
     exit 1
 fi
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 TAP_DIR="/tmp/homebrew-ai-model-manager"
 FORMULA="ai-model-manager.rb"
 
@@ -48,6 +51,7 @@ gh repo view ziguifrido/homebrew-ai-model-manager &>/dev/null || {
     cd "$TAP_DIR"
     git init
     git checkout -b main
+    git remote add origin https://github.com/ziguifrido/homebrew-ai-model-manager.git
 }
 
 # Clone (or fetch if we just created it)
@@ -63,7 +67,7 @@ mkdir -p Casks
 # Generate the formula from template
 sed -e "s/{{VERSION}}/$VERSION/g" \
     -e "s/{{SHA256}}/$SHA256/g" \
-    "/Volumes/XS1000/Developer/Swift/my-ai-models/packaging/homebrew/ai-model-manager.rb" \
+    "$REPO_DIR/packaging/homebrew/ai-model-manager.rb.template" \
     > "Casks/$FORMULA"
 
 echo "==> Formula written to Casks/$FORMULA"

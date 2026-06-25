@@ -13,6 +13,8 @@ homepage "https://github.com/ziguifrido/my-ai-models"
     strategy :github_latest
   end
 
+  depends_on macos: ">= :sonoma"
+
   app "AIModelManager.app"
 
   zap trash: [

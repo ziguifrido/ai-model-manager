@@ -1,2 +1,3 @@
-// Synced with MARKETING_VERSION in xcodeproj
-let appVersion = "0.1.0"
+import Foundation
+
+let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
