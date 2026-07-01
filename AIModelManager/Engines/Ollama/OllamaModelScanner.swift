@@ -68,24 +68,11 @@ struct OllamaModelScanner: ModelScanner {
     }
 
     static func displayName(for manifest: URL, modelFolder: URL) -> String {
-        let components = modelFolder.standardizedFileURL.pathComponents
-        guard let libraryIndex = components.lastIndex(of: "library"),
-              libraryIndex + 1 < components.count else {
-            return manifest.deletingPathExtension().lastPathComponent
-        }
-
-        let relative = components[(libraryIndex + 1)...]
-        guard let baseName = relative.first else {
-            return manifest.deletingPathExtension().lastPathComponent
-        }
-
-        let tag = manifest.deletingPathExtension().lastPathComponent
-        guard !tag.isEmpty,
-              tag.lowercased() != "manifest",
-              tag != baseName else {
+        let baseName = modelFolder.standardizedFileURL.lastPathComponent
+        let tag = manifest.standardizedFileURL.lastPathComponent
+        guard !tag.isEmpty, tag.lowercased() != "manifest", tag != baseName else {
             return baseName
         }
-
         return "\(baseName):\(tag)"
     }
 

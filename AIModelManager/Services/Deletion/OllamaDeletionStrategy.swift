@@ -36,10 +36,10 @@ struct OllamaDeletionStrategy: ModelDeletionStrategy {
             used.formUnion(digests)
         }
 
-        let remainingUsage = used.subtracting(currentDigests)
+        let exclusiveDigests = currentDigests.subtracting(used)
         for blobURL in (try? FileManager.default.contentsOfDirectory(at: blobsDir, includingPropertiesForKeys: nil)) ?? [] {
             let digest = blobURL.lastPathComponent.replacingOccurrences(of: "-", with: ":")
-            if !remainingUsage.contains(digest) {
+            if exclusiveDigests.contains(digest) {
                 total += ModelMetadataExtractor.directorySize(at: blobURL, fileSystem: FileSystem.default)
             }
         }

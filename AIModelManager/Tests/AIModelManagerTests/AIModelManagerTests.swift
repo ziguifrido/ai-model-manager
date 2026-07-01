@@ -106,19 +106,23 @@ final class AIModelManagerTests: XCTestCase {
         let manifestDir = tempDir.appendingPathComponent("manifests/registry.ollama.ai/library/qwen3-8b", isDirectory: true)
         try FileManager.default.createDirectory(at: manifestDir, withIntermediateDirectories: true)
         try FileManager.default.createDirectory(at: tempDir.appendingPathComponent("blobs"), withIntermediateDirectories: true)
-        try "abc".write(to: tempDir.appendingPathComponent("blobs/sha256-abc"), atomically: true, encoding: .utf8)
-        try "def".write(to: tempDir.appendingPathComponent("blobs/sha256-def"), atomically: true, encoding: .utf8)
-        try "zzz".write(to: tempDir.appendingPathComponent("blobs/sha256-zzz"), atomically: true, encoding: .utf8)
+        let configBlob = tempDir.appendingPathComponent("blobs/sha256-abc")
+        let layerBlob = tempDir.appendingPathComponent("blobs/sha256-def")
+        let unrelatedBlob = tempDir.appendingPathComponent("blobs/sha256-zzz")
+        try "abc".write(to: configBlob, atomically: true, encoding: .utf8)
+        try "def".write(to: layerBlob, atomically: true, encoding: .utf8)
+        try "zzz".write(to: unrelatedBlob, atomically: true, encoding: .utf8)
         let manifest = #"{"config":{"digest":"sha256:abc","size":10},"layers":[{"digest":"sha256:def","size":20}]}"#
-        try manifest.data(using: .utf8)!.write(to: manifestDir.appendingPathComponent("latest"))
+        let manifestURL = manifestDir.appendingPathComponent("latest")
+        try manifest.data(using: .utf8)!.write(to: manifestURL)
 
         let model = AIModel(
             id: UUID(),
-            groupingKey: manifestDir.appendingPathComponent("latest").standardizedFileURL.path,
+            groupingKey: manifestURL.standardizedFileURL.path,
             name: "qwen3-8b:latest",
             engine: "Ollama",
-            location: manifestDir.appendingPathComponent("latest").standardizedFileURL,
-            deletionLocation: manifestDir.appendingPathComponent("latest").standardizedFileURL,
+            location: manifestURL.standardizedFileURL,
+            deletionLocation: manifestURL.standardizedFileURL,
             size: 30,
             fileCount: 1,
             primaryExtension: nil,
@@ -129,11 +133,16 @@ final class AIModelManagerTests: XCTestCase {
         let dirs = try await OllamaDeletionStrategy().directoriesToDelete(for: model)
         let paths = Set(dirs.map(\.standardizedFileURL.path))
 
-        XCTAssertTrue(paths.contains(manifestDir.appendingPathComponent("latest").standardizedFileURL.path))
+        XCTAssertTrue(paths.contains(manifestURL.standardizedFileURL.path))
         XCTAssertEqual(paths.count, 1)
 
         let estimated = try await OllamaDeletionStrategy().estimatedReclaimedBytes(for: model)
-        XCTAssertGreaterThan(estimated, 30)
+        let manifestSize = try FileManager.default.attributesOfItem(atPath: manifestURL.path)[.size] as? Int64 ?? 0
+        let expected = manifestSize + 3 + 3
+        XCTAssertEqual(estimated, expected)
+        XCTAssertFalse(estimated > expected)
+        XCTAssertNotEqual(unrelatedBlob.lastPathComponent, "sha256-abc")
+        XCTAssertNotEqual(unrelatedBlob.lastPathComponent, "sha256-def")
     }
 
     func testOllamaDisplayNameIncludesTag() {
