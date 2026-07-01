@@ -6,8 +6,9 @@ struct OllamaDeletionStrategy: ModelDeletionStrategy {
     }
 
     func estimatedReclaimedBytes(for model: AIModel) async throws -> Int64 {
-        let manifestDir = model.location.standardizedFileURL
-        var total = ModelMetadataExtractor.directorySize(at: manifestDir, fileSystem: FileSystem.default)
+        let manifestFile = model.location.standardizedFileURL
+        var total = ModelMetadataExtractor.directorySize(at: manifestFile, fileSystem: FileSystem.default)
+        let manifestDir = manifestFile.deletingLastPathComponent()
 
         guard let root = ollamaRoot(for: manifestDir) else {
             return total
@@ -20,7 +21,7 @@ struct OllamaDeletionStrategy: ModelDeletionStrategy {
             return total
         }
 
-        guard let currentDigests = digests(in: manifestDir).map(Set.init) else { return total }
+        guard let currentDigests = digests(in: manifestFile).map(Set.init) else { return total }
         guard !currentDigests.isEmpty else { return total }
 
         var used = Set<String>()
@@ -30,7 +31,7 @@ struct OllamaDeletionStrategy: ModelDeletionStrategy {
 
         while let url = enumerator.nextObject() as? URL {
             guard !url.hasDirectoryPath else { continue }
-            guard url.standardizedFileURL != manifestDir.standardizedFileURL else { continue }
+            guard url.standardizedFileURL != manifestFile.standardizedFileURL else { continue }
             guard let digests = digests(in: url) else { continue }
             used.formUnion(digests)
         }
@@ -60,19 +61,16 @@ struct OllamaDeletionStrategy: ModelDeletionStrategy {
         }
     }
 
-    private func digests(in modelDir: URL) -> [String]? {
-        let files = (try? FileManager.default.contentsOfDirectory(at: modelDir, includingPropertiesForKeys: nil)) ?? []
-        var digests: [String] = []
-        for file in files where !file.hasDirectoryPath {
-            guard let data = try? Data(contentsOf: file),
-                  let manifest = try? JSONDecoder().decode(OllamaManifest.self, from: data) else {
-                continue
-            }
+    private func digests(in manifestFile: URL) -> [String]? {
+        guard let data = try? Data(contentsOf: manifestFile),
+              let manifest = try? JSONDecoder().decode(OllamaManifest.self, from: data) else {
+            return nil
+        }
 
-            if let digest = manifest.config?.digest { digests.append(digest) }
-            for layer in manifest.layers ?? [] {
-                if let digest = layer.digest { digests.append(digest) }
-            }
+        var digests: [String] = []
+        if let digest = manifest.config?.digest { digests.append(digest) }
+        for layer in manifest.layers ?? [] {
+            if let digest = layer.digest { digests.append(digest) }
         }
         return digests.isEmpty ? nil : digests
     }

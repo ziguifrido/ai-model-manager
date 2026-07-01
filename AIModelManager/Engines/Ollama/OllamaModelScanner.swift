@@ -47,18 +47,18 @@ struct OllamaModelScanner: ModelScanner {
             return nil
         }
 
-        let modelFolder = manifest.deletingLastPathComponent()
-        let standardizedFolder = modelFolder.standardizedFileURL
-        let name = Self.displayName(for: manifest, modelFolder: standardizedFolder)
+        let standardizedManifest = manifest.standardizedFileURL
+        let modelFolder = standardizedManifest.deletingLastPathComponent()
+        let name = Self.displayName(for: standardizedManifest, modelFolder: modelFolder)
         let size = parsed.totalSize
 
         return AIModel(
             id: UUID(),
-            groupingKey: standardizedFolder.path,
+            groupingKey: standardizedManifest.path,
             name: name,
             engine: engineName,
-            location: standardizedFolder,
-            deletionLocation: standardizedFolder,
+            location: standardizedManifest,
+            deletionLocation: standardizedManifest,
             size: size,
             fileCount: 1,
             primaryExtension: nil,
@@ -71,12 +71,12 @@ struct OllamaModelScanner: ModelScanner {
         let components = modelFolder.standardizedFileURL.pathComponents
         guard let libraryIndex = components.lastIndex(of: "library"),
               libraryIndex + 1 < components.count else {
-            return modelFolder.lastPathComponent
+            return manifest.deletingPathExtension().lastPathComponent
         }
 
         let relative = components[(libraryIndex + 1)...]
         guard let baseName = relative.first else {
-            return modelFolder.lastPathComponent
+            return manifest.deletingPathExtension().lastPathComponent
         }
 
         let tag = manifest.deletingPathExtension().lastPathComponent

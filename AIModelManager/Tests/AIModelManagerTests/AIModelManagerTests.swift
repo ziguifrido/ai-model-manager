@@ -74,8 +74,31 @@ final class AIModelManagerTests: XCTestCase {
 
         XCTAssertEqual(models.count, 1)
         XCTAssertEqual(models[0].name, "qwen3-8b:latest")
-        XCTAssertEqual(models[0].location.standardizedFileURL.path, manifestDir.standardizedFileURL.path)
+        XCTAssertEqual(models[0].location.standardizedFileURL.path, manifestURL.standardizedFileURL.path)
         XCTAssertEqual(models[0].size, 30)
+    }
+
+    func testOllamaManifestScannerKeepsMultipleTagsSeparate() async throws {
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        let manifestDir = tempDir.appendingPathComponent("manifests/registry.ollama.ai/library/qwen3-8b", isDirectory: true)
+        try FileManager.default.createDirectory(at: manifestDir, withIntermediateDirectories: true)
+
+        let latestURL = manifestDir.appendingPathComponent("latest")
+        let instructURL = manifestDir.appendingPathComponent("instruct")
+        let latestManifest = #"{"config":{"digest":"sha256:abc","size":10},"layers":[{"digest":"sha256:def","size":20}]}"#
+        let instructManifest = #"{"config":{"digest":"sha256:xyz","size":11},"layers":[{"digest":"sha256:uvw","size":21}]}"#
+        try latestManifest.data(using: .utf8)!.write(to: latestURL)
+        try instructManifest.data(using: .utf8)!.write(to: instructURL)
+
+        let models = try await OllamaModelScanner(roots: [tempDir]).scan()
+        let names = Set(models.map(\.name))
+        let paths = Set(models.map { $0.location.standardizedFileURL.path })
+
+        XCTAssertEqual(models.count, 2)
+        XCTAssertTrue(names.contains("qwen3-8b:latest"))
+        XCTAssertTrue(names.contains("qwen3-8b:instruct"))
+        XCTAssertTrue(paths.contains(latestURL.standardizedFileURL.path))
+        XCTAssertTrue(paths.contains(instructURL.standardizedFileURL.path))
     }
 
     func testOllamaDeletionStrategyIncludesBlobEstimate() async throws {
@@ -91,11 +114,11 @@ final class AIModelManagerTests: XCTestCase {
 
         let model = AIModel(
             id: UUID(),
-            groupingKey: manifestDir.standardizedFileURL.path,
+            groupingKey: manifestDir.appendingPathComponent("latest").standardizedFileURL.path,
             name: "qwen3-8b:latest",
             engine: "Ollama",
-            location: manifestDir.standardizedFileURL,
-            deletionLocation: manifestDir.standardizedFileURL,
+            location: manifestDir.appendingPathComponent("latest").standardizedFileURL,
+            deletionLocation: manifestDir.appendingPathComponent("latest").standardizedFileURL,
             size: 30,
             fileCount: 1,
             primaryExtension: nil,
@@ -106,7 +129,7 @@ final class AIModelManagerTests: XCTestCase {
         let dirs = try await OllamaDeletionStrategy().directoriesToDelete(for: model)
         let paths = Set(dirs.map(\.standardizedFileURL.path))
 
-        XCTAssertTrue(paths.contains(manifestDir.standardizedFileURL.path))
+        XCTAssertTrue(paths.contains(manifestDir.appendingPathComponent("latest").standardizedFileURL.path))
         XCTAssertEqual(paths.count, 1)
 
         let estimated = try await OllamaDeletionStrategy().estimatedReclaimedBytes(for: model)
