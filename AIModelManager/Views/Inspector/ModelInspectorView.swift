@@ -18,5 +18,6 @@ struct ModelInspectorView: View {
         }
         .formStyle(.grouped)
         .padding()
+        .frame(minWidth: 280, idealWidth: 340, maxWidth: 420, maxHeight: .infinity, alignment: .topLeading)
     }
 }

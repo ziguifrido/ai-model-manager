@@ -14,18 +14,7 @@ struct ContentView: View {
     var body: some View {
         @Bindable var vm = viewModel
 
-        NavigationSplitView {
-            SidebarView(selectedEngine: $vm.selectedEngine, engines: vm.engines)
-        } content: {
-            ModelBrowserView(viewModel: vm)
-                .searchable(text: $vm.searchText, prompt: "Search models")
-        } detail: {
-            if let model = vm.selectedModels.first {
-                ModelInspectorView(model: model)
-            } else {
-                ContentUnavailableView("No model selected", systemImage: "internaldrive")
-            }
-        }
+        splitView(using: vm)
         .navigationSplitViewStyle(.balanced)
         .toolbar {
             ToolbarItemGroup {
@@ -66,8 +55,29 @@ struct ContentView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
-        .task {
-            if vm.inventoryStore.models.isEmpty { vm.scanNow() }
+        .task { if vm.inventoryStore.models.isEmpty { vm.scanNow() } }
+    }
+
+    @ViewBuilder
+    private func splitView(using vm: LibraryViewModel) -> some View {
+        let browser = ModelBrowserView(viewModel: vm)
+            .searchable(text: $viewModel.searchText, prompt: "Search models")
+
+        if let model = vm.selectedModels.first {
+            NavigationSplitView {
+                SidebarView(selectedEngine: $viewModel.selectedEngine, engines: vm.engines)
+            } content: {
+                browser
+            } detail: {
+                ModelInspectorView(model: model)
+                    .navigationSplitViewColumnWidth(min: 280, ideal: 340, max: 420)
+            }
+        } else {
+            NavigationSplitView {
+                SidebarView(selectedEngine: $viewModel.selectedEngine, engines: vm.engines)
+            } detail: {
+                browser
+            }
         }
     }
 }
