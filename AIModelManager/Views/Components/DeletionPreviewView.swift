@@ -11,7 +11,7 @@ struct DeletionPreviewView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("\(dirs.count) director\(dirs.count == 1 ? "y" : "ies") will be permanently deleted:")
+                    Text("\(dirs.count) item\(dirs.count == 1 ? "" : "s") will be permanently deleted:")
                         .font(.headline)
                     Divider()
                     ForEach(dirs, id: \.path) { url in
@@ -24,7 +24,7 @@ struct DeletionPreviewView: View {
                 }
             }
 
-            Text("Total space reclaimed: \(Formatting.byteCount(dirs.reduce(0) { $0 + ModelMetadataExtractor.directorySize(at: $1, fileSystem: FileSystem.default) }))")
+            Text("Total space reclaimed: \(Formatting.byteCount(viewModel.pendingDeletionSize))")
                 .font(.subheadline)
 
             HStack {

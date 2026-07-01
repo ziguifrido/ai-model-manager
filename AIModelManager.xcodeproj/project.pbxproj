@@ -47,6 +47,7 @@
 		F4C3B6440AAABE6D37300203 /* AIModelManager/Models/AppPreferencesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7B4ACD8AE278C74A577C5 /* AIModelManager/Models/AppPreferencesModel.swift */; };
 		F80A4978E9D56A2834450525 /* AIModelManager/Services/Persistence/ConfigurationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4900E5F5E140224E7FA71B3 /* AIModelManager/Services/Persistence/ConfigurationStore.swift */; };
 		FAE7708E908AAF8362BD55D6 /* AIModelManager/Services/Deletion/LMStudioDeletionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F74F3794746FB9744023385 /* AIModelManager/Services/Deletion/LMStudioDeletionStrategy.swift */; };
+		FAE7708E908AAF8362BD55D7 /* AIModelManager/Services/Deletion/OllamaDeletionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F74F3794746FB9744023386 /* AIModelManager/Services/Deletion/OllamaDeletionStrategy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		818E02C8DFABDF82654720BD /* AIModelManager/Services/Deletion/ModelDeletionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelManager/Services/Deletion/ModelDeletionStrategy.swift; sourceTree = SOURCE_ROOT; };
 		8C83CD1A2C90C4B163DCA58D /* AIModelManager/ViewModels/LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelManager/ViewModels/LibraryViewModel.swift; sourceTree = SOURCE_ROOT; };
 		8F74F3794746FB9744023385 /* AIModelManager/Services/Deletion/LMStudioDeletionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelManager/Services/Deletion/LMStudioDeletionStrategy.swift; sourceTree = SOURCE_ROOT; };
+		8F74F3794746FB9744023386 /* AIModelManager/Services/Deletion/OllamaDeletionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelManager/Services/Deletion/OllamaDeletionStrategy.swift; sourceTree = SOURCE_ROOT; };
 		9BF6C2C7CE60D03338401CC9 /* AIModelManager/Models/EngineScanConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelManager/Models/EngineScanConfiguration.swift; sourceTree = SOURCE_ROOT; };
 		9D85474E17BE2DD19C554DCA /* AIModelManager/Views/Settings/SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelManager/Views/Settings/SettingsView.swift; sourceTree = SOURCE_ROOT; };
 		9E8BB7C06684FDF49A086E09 /* AIModelManager/App/AIModelManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModelManager/App/AIModelManagerApp.swift; sourceTree = SOURCE_ROOT; };
@@ -151,6 +153,7 @@
 				3D117C8262F996B2835428AF /* AIModelManager/Models/ModelSortOption.swift */,
 				E270E6B7971DF28E5E1E4B12 /* AIModelManager/Models/ScanConfigurationModel.swift */,
 				8F74F3794746FB9744023385 /* AIModelManager/Services/Deletion/LMStudioDeletionStrategy.swift */,
+				8F74F3794746FB9744023386 /* AIModelManager/Services/Deletion/OllamaDeletionStrategy.swift */,
 				818E02C8DFABDF82654720BD /* AIModelManager/Services/Deletion/ModelDeletionStrategy.swift */,
 				17464934BFAEBACFC28BF455 /* AIModelManager/Services/Filesystem/FileSystem.swift */,
 				0D626FC5766015A7C949601A /* AIModelManager/Services/Metadata/ModelMetadataExtractor.swift */,
@@ -284,6 +287,7 @@
 				DCB55EDEB6A10C4520326649 /* AIModelManager/Models/ModelSortOption.swift in Sources */,
 				1323805286DFA10415FF639C /* AIModelManager/Models/ScanConfigurationModel.swift in Sources */,
 				FAE7708E908AAF8362BD55D6 /* AIModelManager/Services/Deletion/LMStudioDeletionStrategy.swift in Sources */,
+				FAE7708E908AAF8362BD55D7 /* AIModelManager/Services/Deletion/OllamaDeletionStrategy.swift in Sources */,
 				BBE483A7EBC0ED3B94AB9A74 /* AIModelManager/Services/Deletion/ModelDeletionStrategy.swift in Sources */,
 				43BBAD03CB3106338539A328 /* AIModelManager/Services/Filesystem/FileSystem.swift in Sources */,
 				37D7CB02426143B9B10903D1 /* AIModelManager/Services/Metadata/ModelMetadataExtractor.swift in Sources */,
