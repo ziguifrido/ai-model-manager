@@ -12,6 +12,7 @@ final class LibraryViewModel {
     var showDeletionPreview = false
     var pendingDeletionDirectories: [URL] = []
     var pendingDeletionErrors: [String] = []
+    var pendingDeletionSize: Int64 = 0
 
     private let scannerService: ModelScannerService
     private let configurationStore: ConfigurationStore
@@ -63,16 +64,19 @@ final class LibraryViewModel {
         let models = selectedModels
         var dirs: [URL] = []
         var errors: [String] = []
+        var totalSize: Int64 = 0
         for model in models {
             let strategy = ModelDeletionStrategyFactory.strategy(for: model.engine)
             do {
                 dirs += try await strategy.directoriesToDelete(for: model)
+                totalSize += try await strategy.estimatedReclaimedBytes(for: model)
             } catch {
                 errors.append("\(model.name): \(error.localizedDescription)")
             }
         }
         pendingDeletionDirectories = Array(Set(dirs))
         pendingDeletionErrors = errors
+        pendingDeletionSize = totalSize
         showDeletionPreview = true
     }
 
@@ -93,12 +97,14 @@ final class LibraryViewModel {
         showDeletionPreview = false
         pendingDeletionDirectories = []
         pendingDeletionErrors = []
+        pendingDeletionSize = 0
     }
 
     func cancelDeletion() {
         showDeletionPreview = false
         pendingDeletionDirectories = []
         pendingDeletionErrors = []
+        pendingDeletionSize = 0
     }
 
     func openInFinder(_ model: AIModel) {

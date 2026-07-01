@@ -47,26 +47,33 @@ struct OllamaModelScanner: ModelScanner {
             return nil
         }
 
-        let modelFolder = manifest.deletingLastPathComponent()
-        let standardizedFolder = modelFolder.standardizedFileURL
-        let comps = standardizedFolder.pathComponents
-        // ponytail: model name is the component after "library" in the path, works even when prefix stripping fails
-        let name = comps.firstIndex(of: "library").flatMap { $0 + 1 < comps.count ? comps[$0 + 1] : nil } ?? standardizedFolder.lastPathComponent
+        let standardizedManifest = manifest.standardizedFileURL
+        let modelFolder = standardizedManifest.deletingLastPathComponent()
+        let name = Self.displayName(for: standardizedManifest, modelFolder: modelFolder)
         let size = parsed.totalSize
 
         return AIModel(
             id: UUID(),
-            groupingKey: standardizedFolder.path,
+            groupingKey: standardizedManifest.path,
             name: name,
             engine: engineName,
-            location: standardizedFolder,
-            deletionLocation: standardizedFolder,
+            location: standardizedManifest,
+            deletionLocation: standardizedManifest,
             size: size,
             fileCount: 1,
             primaryExtension: nil,
             sha256: nil,
             itemCount: 1
         )
+    }
+
+    static func displayName(for manifest: URL, modelFolder: URL) -> String {
+        let baseName = modelFolder.standardizedFileURL.lastPathComponent
+        let tag = manifest.standardizedFileURL.lastPathComponent
+        guard !tag.isEmpty, tag.lowercased() != "manifest", tag != baseName else {
+            return baseName
+        }
+        return "\(baseName):\(tag)"
     }
 
     // ponytail: scans all manifests, deletes blobs whose digest no remaining manifest references
@@ -97,7 +104,7 @@ struct OllamaModelScanner: ModelScanner {
     }
 }
 
-private struct OllamaManifest: Decodable {
+struct OllamaManifest: Decodable {
     struct Layer: Decodable {
         let size: Int64?
         let digest: String?

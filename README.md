@@ -12,7 +12,7 @@ A native macOS application for discovering and managing local AI models installe
 
 AI Model Manager scans your local model directories, presents them in a clean SwiftUI interface, and helps you understand disk usage, find duplicates, and safely delete models you no longer need.
 
-Version: `0.1.7`
+Version: `0.1.8`
 
 ---
 
