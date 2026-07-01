@@ -68,6 +68,24 @@ When asked to commit, prefer small, logical commits:
 5. CI/CD, scripts, packaging
 6. Documentation (CHANGELOG, README, AGENTS)
 
+## Git Flow
+
+- Use short-lived topic branches for fixes and features.
+- Name hotfix branches `hotfix/x.y.z` and feature branches `feature/<slug>`.
+- Merge or commit back to the mainline only after the branch is validated.
+
+## Commit Style
+
+- Use conventional commits for local and published history.
+- Prefer `fix:`, `feat:`, `docs:`, `chore:`, and `refactor:` prefixes.
+- Keep each commit focused on one logical change.
+
+## Versioning
+
+- Follow semantic versioning for release numbers.
+- Bump `MAJOR` for breaking changes, `MINOR` for backward-compatible features, and `PATCH` for fixes.
+- Keep `README.md` and project marketing version in sync with the release version.
+
 ## Working Rule
 
 - Keep changes minimal and root-cause focused.
