@@ -15,7 +15,7 @@ final class AppContainer {
 
     static func live() -> AppContainer {
         let configurationStore = ConfigurationStore()
-        let service = ModelScannerService(configurationStore: configurationStore, fileSystem: FileSystem.default) { configuration in
+        let service = ModelScannerService(fileSystem: FileSystem.default) { configuration in
             [
                 OllamaModelScanner(roots: EnginePaths.defaults(for: .ollama) + configuration.urls(for: .ollama)),
                 LMStudioModelScanner(roots: EnginePaths.defaults(for: .lmStudio) + configuration.urls(for: .lmStudio)),

@@ -7,7 +7,8 @@ struct ContentView: View {
     init(container: AppContainer) {
         _viewModel = State(initialValue: LibraryViewModel(
             scannerService: container.scannerService,
-            inventoryStore: container.inventoryStore
+            inventoryStore: container.inventoryStore,
+            configurationStore: container.configurationStore
         ))
     }
 
