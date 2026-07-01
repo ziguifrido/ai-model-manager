@@ -7,17 +7,14 @@ struct ScanSummary: Sendable {
 
 actor ModelScannerService {
     private let scannerFactory: @Sendable (ScanConfiguration) -> [any ModelScanner]
-    private let configurationStore: ConfigurationStore
     private let fileSystem: FileSystem
 
-    init(configurationStore: ConfigurationStore, fileSystem: FileSystem, scannerFactory: @escaping @Sendable (ScanConfiguration) -> [any ModelScanner]) {
-        self.configurationStore = configurationStore
+    init(fileSystem: FileSystem, scannerFactory: @escaping @Sendable (ScanConfiguration) -> [any ModelScanner]) {
         self.fileSystem = fileSystem
         self.scannerFactory = scannerFactory
     }
 
-    func scanAll() async -> ScanSummary {
-        let configuration = configurationStore.config
+    func scanAll(configuration: ScanConfiguration) async -> ScanSummary {
         let scanners = scannerFactory(configuration)
         return await withTaskGroup(of: (models: [AIModel], warning: String?).self) { group in
             for scanner in scanners {

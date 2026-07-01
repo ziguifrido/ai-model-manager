@@ -2,6 +2,7 @@ import Foundation
 import AppKit
 
 @Observable
+@MainActor
 final class LibraryViewModel {
     var searchText = ""
     var selectedEngine = ""
@@ -13,11 +14,13 @@ final class LibraryViewModel {
     var pendingDeletionErrors: [String] = []
 
     private let scannerService: ModelScannerService
+    private let configurationStore: ConfigurationStore
     let inventoryStore: ModelInventoryStore
 
-    init(scannerService: ModelScannerService, inventoryStore: ModelInventoryStore) {
+    init(scannerService: ModelScannerService, inventoryStore: ModelInventoryStore, configurationStore: ConfigurationStore) {
         self.scannerService = scannerService
         self.inventoryStore = inventoryStore
+        self.configurationStore = configurationStore
     }
 
     var models: [AIModel] {
@@ -48,8 +51,9 @@ final class LibraryViewModel {
     func scanNow() {
         guard !isScanning else { return }
         isScanning = true
+        let configuration = configurationStore.config
         Task {
-            let summary = await scannerService.scanAll()
+            let summary = await scannerService.scanAll(configuration: configuration)
             inventoryStore.update(models: summary.models, warnings: summary.warnings)
             isScanning = false
         }

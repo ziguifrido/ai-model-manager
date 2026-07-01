@@ -6,12 +6,15 @@ struct ModelBrowserView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
+                Spacer()
                 Picker("Sort", selection: $viewModel.sortOption) {
                     ForEach(ModelSortOption.allCases) { option in
                         Text(option.rawValue.capitalized).tag(option)
                     }
                 }
                 .pickerStyle(.segmented)
+                .fixedSize()
+                Spacer()
             }
             .padding()
 
