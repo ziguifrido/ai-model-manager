@@ -131,7 +131,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		AF94AE8C979A7DD302DBBA9A /*  */ = {
+		AF94AE8C979A7DD302DBBA9A = {
 			isa = PBXGroup;
 			children = (
 				9E8BB7C06684FDF49A086E09 /* AIModelManager/App/AIModelManagerApp.swift */,
@@ -176,7 +176,6 @@
 				196A1AA79B2F6CA186E2C2D0 /* AIModelManager/Assets.xcassets */,
 				8C022948E07887E31192ABBE /* Products */,
 			);
-			name = "";
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
@@ -223,7 +222,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2650;
+				LastUpgradeCheck = 2660;
 			};
 			buildConfigurationList = B9EACD5B950CEA3A53B1A8E9 /* Build configuration list for PBXProject "AIModelManager" */;
 			compatibilityVersion = "Xcode 16.0";
@@ -233,7 +232,7 @@
 				en,
 				Base,
 			);
-			mainGroup = AF94AE8C979A7DD302DBBA9A /*  */;
+			mainGroup = AF94AE8C979A7DD302DBBA9A;
 			productRefGroup = 8C022948E07887E31192ABBE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -325,6 +324,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
@@ -421,6 +421,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
